@@ -1,0 +1,22 @@
+<html>
+	<body>
+
+		<script>
+			var eventSource = new EventSource('/stream');
+			// var stockChart; // A <canvas> wrapper perhaps
+			// var newsTicker; // A <ul> of news story links
+
+			// eventSource.addEventListener('open', function() {
+			//     stockChart = initializeChart();
+			//     newsTicker = initializeTicker();
+			// }, false);
+
+			// Only fired by events with the type: "news"
+			eventSource.addEventListener('data', function(event) {
+			    receiveData.add(event.id, event.data);
+			    consold.log(data);
+			}, false);
+		</script>
+
+	</body>
+</html>
