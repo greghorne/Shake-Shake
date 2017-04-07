@@ -30,7 +30,7 @@ get '/streamer', provides: 'text/event-stream' do
       location = "Tulsa, OK"
       data = "data: {\"lng\": " + lng.to_s + "}\n\n"
       data = "data: {\"username\": \"bobby\", \"time\": \"02:33:48\"}\n\n"
-      data = "data: " + Time.now.to_s + "\n\n"
+      data = "data: " + Time.now.to_s + "  " + connections.count.to_s + "\n\n"
       puts data
       out << data
       sleep 15
