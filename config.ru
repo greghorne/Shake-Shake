@@ -1,3 +1,3 @@
-require'./'
+require './'
 run Sinatra::Application
 
