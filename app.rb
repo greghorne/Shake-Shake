@@ -1,6 +1,6 @@
 # coding: utf-8
 require 'sinatra'
-set server: 'thin'
+set server: 'puma'
 connections = []
 
 # ================================================
