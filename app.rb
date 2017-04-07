@@ -1,6 +1,6 @@
 # coding: utf-8
 require 'sinatra'
-set server: 'puma'
+set server: 'thin'
 connections = []
 
 # ================================================
@@ -33,7 +33,7 @@ get '/streamer', provides: 'text/event-stream' do
       data = "data: " + Time.now.to_s + "\n\n"
       puts data
       out << data
-      sleep 30
+      sleep 15
       
       # out << "data: {}\n\n"
       
