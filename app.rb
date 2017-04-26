@@ -1,5 +1,8 @@
 # coding: utf-8
 require 'sinatra'
+require 'rest-client'
+require 'json'
+
 set server: 'thin'
 connections = []
 
@@ -25,15 +28,15 @@ get '/streamer', provides: 'text/event-stream' do
 
     while !out.closed?
       # out << "data: " + Time.now.to_s + "\n\n"
-      lng = -96
-      lat = 36
-      location = "Tulsa, OK"
-      data = "data: {\"lng\": " + lng.to_s + "}\n\n"
-      data = "data: {\"username\": \"bobby\", \"time\": \"02:33:48\"}\n\n"
+      # lng = -962
+      # lat = 36
+      # location = "Tulsa, OK"
+      # data = "data: {\"lng\": " + lng.to_s + "}\n\n"
+      # data = "data: {\"username\": \"bobby\", \"time\": \"02:33:48\"}\n\n"
       data = "data: " + Time.now.to_s + "  " + connections.count.to_s + "\n\n"
       puts data
       out << data
-      sleep 15
+      sleep 10
       
       # out << "data: {}\n\n"
       
@@ -42,6 +45,23 @@ get '/streamer', provides: 'text/event-stream' do
       puts "Connections Count: " + connections.count.to_s
       puts "=========="
       puts ""
+
+      https = 'https://earthquake.usgs.gov/fdsnws/event/1/query'
+      params = {
+        :format => 'geojson'
+        # :starttime => Time.now.utc - (24 * 60 - 10),
+        # :orderby => 'time',
+        # :eventtype => 'earthquake'
+      }
+      response = RestClient.get https, {params: 
+                                          {
+                                            :format => 'geojson',
+                                            :starttime => Time.now.utc - (24 * 60 - 1),
+                                            :orderby => 'time',
+                                            :eventtype => 'earthquake'
+                                          }
+                                       }
+      puts response
 
     end
   end
