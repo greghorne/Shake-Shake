@@ -111,15 +111,17 @@ __END__
     <link rel="icon" href="earthquakes.ico" type="image/x-icon"/>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin=""/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" crossorigin=""></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <!-- // <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
       #map { width: 100%; 
              height: 100%
            }
-
     </style>
   </head> 
   <body><%= yield %></body>
@@ -152,9 +154,14 @@ __END__
         depth      = json['z'];
         time       = json['utc'];
 
+        // if (marker !== 'indefined') map.removeLayer(marker);
+        console.log(marker);
+        if (marker !== undefined) { console.log("here"); map.removeLayer(marker); }
+
         marker = L.marker([latitudeY, longitudeX]).addTo(map);
         marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
-        map.setView(L.latLng(latitudeY, longitudeX), 8)   // change to 16
+        $("#map").effect("shake", "times:10");
+        map.setView(L.latLng(latitudeY, longitudeX), 8);   // change to 16
       }
     }, false);
 
