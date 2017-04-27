@@ -15,17 +15,16 @@ end
 # ================================================
 get '/streamer', provides: 'text/event-stream' do
 
-  current_earthquake_code = ""
-  code = ""
-
   stream :keep_open do |out|
+    current_earthquake_code = ""
+    code = ""
+
+    connections << out
+    out.callback{connections.delete(out)}
 
     puts "========================="
     puts "Connections Count: " + connections.count.to_s
     puts "========================="
-
-    connections << out
-    out.callback{connections.delete(out)}
 
     while !out.closed?
 
@@ -41,26 +40,27 @@ get '/streamer', provides: 'text/event-stream' do
         time      = response['features'][0]['properties']['time']
         code      = response['features'][0]['properties']['code']
         title     = response['features'][0]['properties']['title']
-        lngY      = response['features'][0]['geometry']['coordinates'][0]
-        latX      = response['features'][0]['geometry']['coordinates'][1]
+        lngX      = response['features'][0]['geometry']['coordinates'][0]
+        latY      = response['features'][0]['geometry']['coordinates'][1]
         depth     = response['features'][0]['geometry']['coordinates'][2]
 
         puts "=========================================="
         puts "title: " + title.to_s
         puts "code:  " + code.to_s
         puts "time:  " + Time.at(time/1000).to_s
-        puts "coords:" + lngY.to_s + ", " + latX.to_s
+        puts "coords:" + lngX.to_s + ", " + latY.to_s
         puts "depth: " + depth.to_s + " km"
         puts "now:   " + Time.now.to_s
         puts "=========================================="
         puts 
 
         # data = "data: {\"username\": \"bobby\", \"time\": \"02:33:48\"}\n\n"
-        data = "data: {\"title\":\"" + title.to_s + "\", \"lngY\":" + lngY.to_s + ", \"latX\":" + latX.to_s + "}\n\n"
+        # data = "data: {\"title\":\"" + title.to_s + "\", \"lngY\":" + lngY.to_s + ", \"latX\":" + latX.to_s + "}\n\n"
+        data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
       else
         data = "data:\n\n"
       end
-
+      puts bytesize(data)
       out << data
       sleep 30
 
