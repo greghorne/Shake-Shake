@@ -15,58 +15,76 @@ end
 # ================================================
 get '/streamer', provides: 'text/event-stream' do
 
+  current_earthquake_code = ""
+  code = ""
+
   stream :keep_open do |out|
 
-    puts ""
-    puts "=========="
+    puts "========================="
     puts "Connections Count: " + connections.count.to_s
-    puts "=========="
-    puts ""
+    puts "========================="
 
     connections << out
     out.callback{connections.delete(out)}
 
     while !out.closed?
-      # out << "data: " + Time.now.to_s + "\n\n"
-      # lng = -962
-      # lat = 36
-      # location = "Tulsa, OK"
-      # data = "data: {\"lng\": " + lng.to_s + "}\n\n"
-      # data = "data: {\"username\": \"bobby\", \"time\": \"02:33:48\"}\n\n"
-      data = "data: " + Time.now.to_s + "  " + connections.count.to_s + "\n\n"
-      puts data
-      out << data
-      sleep 10
-      
-      # out << "data: {}\n\n"
-      
-      puts ""
-      puts "=========="
-      puts "Connections Count: " + connections.count.to_s
-      puts "=========="
-      puts ""
 
-      https = 'https://earthquake.usgs.gov/fdsnws/event/1/query'
-      params = {
-        :format => 'geojson'
-        # :starttime => Time.now.utc - (24 * 60 - 10),
-        # :orderby => 'time',
-        # :eventtype => 'earthquake'
-      }
-      response = RestClient.get https, {params: 
-                                          {
-                                            :format => 'geojson',
-                                            :starttime => Time.now.utc - (24 * 60 - 1),
-                                            :orderby => 'time',
-                                            :eventtype => 'earthquake'
-                                          }
-                                       }
-      puts response
+      offsetTime  = 60 * 60 # 60 minutes
+      response    = JSON.parse(getUSGS(offsetTime))
+
+      code = response['features'][0]['properties']['code']
+      # puts code
+      if (current_earthquake_code != code)
+        current_earthquake_code = code
+
+        magnitude = response['features'][0]['properties']['mag']
+        time      = response['features'][0]['properties']['time']
+        code      = response['features'][0]['properties']['code']
+        title     = response['features'][0]['properties']['title']
+        lngY      = response['features'][0]['geometry']['coordinates'][0]
+        latX      = response['features'][0]['geometry']['coordinates'][1]
+        depth     = response['features'][0]['geometry']['coordinates'][2]
+
+        puts "=========================================="
+        puts "title: " + title.to_s
+        puts "code:  " + code.to_s
+        puts "time:  " + Time.at(time/1000).to_s
+        puts "coords:" + lngY.to_s + ", " + latX.to_s
+        puts "depth: " + depth.to_s + " km"
+        puts "now:   " + Time.now.to_s
+        puts "=========================================="
+        puts 
+
+        # data = "data: {\"username\": \"bobby\", \"time\": \"02:33:48\"}\n\n"
+        data = "data: {\"title\":\"" + title.to_s + "\", \"lngY\":" + lngY.to_s + ", \"latX\":" + latX.to_s + "}\n\n"
+      else
+        data = "data:\n\n"
+      end
+
+      out << data
+      sleep 30
 
     end
   end
 end
 # ================================================
+
+# ================================================
+def getUSGS(offsetTime)
+
+  https = 'https://earthquake.usgs.gov/fdsnws/event/1/query'
+  response = RestClient.get https, {params: 
+                                      {
+                                        :format => 'geojson',
+                                        :starttime => Time.now.utc - offsetTime,
+                                        :orderby => 'time',
+                                        :eventtype => 'earthquake'
+                                      }
+                                   }
+  return response
+end
+# ================================================
+
 
 __END__
 
@@ -96,7 +114,6 @@ __END__
     
     // var data = JSON.parse(event.data);
     // console.log(data.lng);
-
     console.log(event.data)
     // alert("We be here")
   }, false);
