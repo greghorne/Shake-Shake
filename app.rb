@@ -160,8 +160,8 @@ __END__
 
         marker = L.marker([latitudeY, longitudeX]).addTo(map);
         marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
-        $("#map").effect("shake", "times:10");
         map.setView(L.latLng(latitudeY, longitudeX), 8);   // change to 16
+        $("#map").effect("shake", "times: 20");
       }
     }, false);
 
