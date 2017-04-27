@@ -5,6 +5,7 @@ require 'json'
 
 set server: 'thin'
 connections = []
+trace = true
 
 # ================================================
 get '/' do
@@ -28,10 +29,12 @@ get '/streamer', provides: 'text/event-stream' do
 
     out.callback{connections.delete(out)}
 
-    puts "========================="
-    puts "Connections Count: " + connections.count.to_s
-    puts "========================="
-    puts
+    if trace 
+      puts "========================="
+      puts "Connections Count: " + connections.count.to_s
+      puts "========================="
+      puts
+    end
 
     while !out.closed?
 
@@ -50,31 +53,29 @@ get '/streamer', provides: 'text/event-stream' do
 
         # magnitude = response['features'][0]['properties']['mag']
         time      = response['features'][0]['properties']['time']
-        # code      = response['features'][0]['properties']['code']
         code      = current_earthquake_code
         title     = response['features'][0]['properties']['title']
         lngX      = response['features'][0]['geometry']['coordinates'][0]
         latY      = response['features'][0]['geometry']['coordinates'][1]
         depth     = response['features'][0]['geometry']['coordinates'][2]
 
-        puts "=========================================="
-        puts "title: " + title.to_s
-        puts "code:  " + code.to_s
-        puts "time:  " + Time.at(time/1000).to_s
-        puts "coords:" + lngX.to_s + ", " + latY.to_s
-        puts "depth: " + depth.to_s + " km"
-        puts "now:   " + Time.now.to_s
-        puts "=========================================="
-        puts 
+        if trace 
+          puts "=========================================="
+          puts "title: " + title.to_s
+          puts "code:  " + code.to_s
+          puts "time:  " + Time.at(time/1000).to_s
+          puts "coords:" + lngX.to_s + ", " + latY.to_s
+          puts "depth: " + depth.to_s + " km"
+          puts "now:   " + Time.now.to_s
+          puts "=========================================="
+          puts 
+        end
 
-        # data = "data: {\"username\": \"bobby\", \"time\": \"02:33:48\"}\n\n"
-        # data = "data: {\"title\":\"" + title.to_s + "\", \"lngY\":" + lngY.to_s + ", \"latX\":" + latX.to_s + "}\n\n"
         data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
       else
         data = "data: {\"msg\":\"0\"}\n\n"
       end
-      # puts "bytes: "+ bytesize(data).to_s
-      # puts
+
       out << data
       sleep 30
 
@@ -107,6 +108,7 @@ __END__
   <head> 
     <title>Shake-Shake</title> 
     <meta charset="utf-8" />
+    <link rel="icon" href="earthquakes.ico" type="image/x-icon"/>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin=""/>
     
@@ -130,45 +132,54 @@ __END__
 
 <script>
 
+  var marker;
+  var trace = true;
 
   $(document).ready(function() {
 
     var eventSource = new EventSource('/streamer');
 
     eventSource.addEventListener('message', function(event){
-      // console.log("Receiving data!!!...")
-      
-      // var data = JSON.parse(event.data);
-      // console.log(data.lng);
-      console.log(event.data);
+
+      if (false) console.log(event.data);
       json = JSON.parse(event.data);
-      console.log(json);
+      if (trace) console.log(json);
+
       if (json['msg'] != "0") {
         longitudeX = json['x'];
         latitudeY  = json['y'];
+        msg        = json['msg'];
+        depth      = json['z'];
+        time       = json['utc'];
 
-        map.setView(L.latLng(latitudeY, longitudeX), 10)   // change to 16
+        marker = L.marker([latitudeY, longitudeX]).addTo(map);
+        marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
+        map.setView(L.latLng(latitudeY, longitudeX), 8)   // change to 16
       }
-      // alert("We be here")
     }, false);
 
     eventSource.addEventListener('error', function(event) {
       // if this event fires it will automatically try and reconnect
-      console.log("--------------------")
-      console.log("error...")
-      console.log(event)
-      console.log("--------------------")
+      if (trace) {
+        console.log("--------------------")
+        console.log("error...")
+        console.log(event)
+        console.log("--------------------")
+      }
     }, false);
 
     eventSource.addEventListener('close', function(event) {
-      console.log("--------------------")
-      console.log("connection closed...")
-      console.log(event)
-      console.log("--------------------")
+      if (trace) {
+        console.log("--------------------")
+        console.log("connection closed...")
+        console.log(event)
+        console.log("--------------------")
+      }
     }, false)
 
+
     // =======================================
-    // leaflet begin =========================
+    // leaflet begin >>>>>>>>>>>>>>>>>>>>>>>>>
     // =======================================
     var latitude = 35.746512259918504
     var longitude = -96.9873046875
@@ -185,11 +196,10 @@ __END__
       layers: [osm],
       loadingControl: true
     });
+    // =======================================
+    // leaflet end <<<<<<<<<<<<<<<<<<<<<<<<<<<
+    // =======================================
 
-    L.control.layers(osm).addTo(map);
-    // =======================================
-    // leaflet end ===========================
-    // =======================================
 
   });
 
