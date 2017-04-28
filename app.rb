@@ -135,7 +135,7 @@ __END__
 <script>
 
   var marker;
-  var trace = true;
+  var trace = false; 
 
   $(document).ready(function() {
 
@@ -154,13 +154,12 @@ __END__
         depth      = json['z'];
         time       = json['utc'];
 
-        // if (marker !== 'indefined') map.removeLayer(marker);
-        console.log(marker);
         if (marker !== undefined) { console.log("here"); map.removeLayer(marker); }
 
         marker = L.marker([latitudeY, longitudeX]).addTo(map);
         marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
         map.setView(L.latLng(latitudeY, longitudeX), 8);   // change to 16
+
         $("#map").effect("shake", "times: 20");
       }
     }, false);
