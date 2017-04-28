@@ -12,6 +12,7 @@
 - ruby 2.4.0p0 (2016-12-24 revision 57164) [i686-linux] 
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
 - Leaflet 1.0.3 
+- OpenStreetMaps
 </br>  
 
 *What this website does:*
@@ -23,7 +24,8 @@
 - When a new earthquake event is received by the server, such inforrmation is pushed to the client browser repositioning the and displaying some information about the event.
 - If the initial map displayed is a view of the USA with no marker on the map signifying an earthquake, this means an earthquake has not been recorded in the last 15 minutes.  Thus just leave the webpage as is and wait.
 </br>
+<center>
 This webpage can be more fun than watching paint dry.</br>
 </br>
 Deployment: https://shake-shake.herokuapp.com/</br>
-
+</center>
