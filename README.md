@@ -11,8 +11,7 @@
 
 - ruby 2.4.0p0 (2016-12-24 revision 57164) [i686-linux] 
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
-- Leaflet 1.0.3 
-- OpenStreetMaps
+- Leaflet 1.0.3 with OpenStreetMaps (https://en.wikipedia.org/wiki/OpenStreetMap)
 
 *What this website does:*
 
