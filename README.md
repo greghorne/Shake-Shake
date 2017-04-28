@@ -14,4 +14,5 @@ Reposition map on client and display some information about the recent earthquak
 </br>
 This can be more fun than watching paint dry</br>
 
+Deployment: https://shake-shake.herokuapp.com/</br>
 
