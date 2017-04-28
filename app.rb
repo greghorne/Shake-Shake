@@ -171,7 +171,7 @@ __END__
         $("#map").effect("shake", "times: 20");
       } else {
         var d = new Date();
-        if (trace) console.log("msg: " + d.to_s);
+        if (trace) console.log("msg: " + d);
       }
 
     }, false);
