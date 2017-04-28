@@ -7,7 +7,6 @@
 - The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Please note that Server-Sent Events are not supported by IE/Edge as of this writing.
 - Wikipedia: https://en.wikipedia.org/wiki/Server-sent_events
 </br>
-
 *Tools/Components:*</br>
 
 - ruby 2.4.0p0 (2016-12-24 revision 57164) [i686-linux] 
@@ -15,7 +14,6 @@
 - Leaflet 1.0.3 
 - OpenStreetMaps
 </br>  
-
 *What this website does:*
 
 - Display to user a map.
