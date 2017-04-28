@@ -38,8 +38,8 @@ get '/streamer', provides: 'text/event-stream' do
 
     while !out.closed?
 
-      # 60 (seconds) * 60 (minutes)
-      offsetTime  = 60 * 60 
+      # 60 (seconds) * 120 (minutes)
+      offsetTime  = 60 * 120 
 
       # rest api call to usgs
       response    = JSON.parse(getUSGS(offsetTime))
