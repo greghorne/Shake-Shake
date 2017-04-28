@@ -154,7 +154,7 @@ __END__
         depth      = json['z'];
         time       = json['utc'];
 
-        if (marker !== undefined) { console.log("here"); map.removeLayer(marker); }
+        if (marker !== undefined) map.removeLayer(marker);
 
         marker = L.marker([latitudeY, longitudeX]).addTo(map);
         marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
