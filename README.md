@@ -22,6 +22,7 @@
 - The intent of the webpage is to display the last earthquake that has occurred within the last 15 minutes.
 - When a new earthquake event is received by the server, such inforrmation is pushed to the client browser repositioning the and displaying information about the event.
 - If the initial map displayed is a view of the USA with no marker on the map signifying an earthquake, this means an earthquake has not been recorded in the last 15 minutes.  Thus just leave the webpage as is and wait.
+- If the browser's developer's console is open, one can observe the messages being sent to the client from the server.
 </br>
 
 This webpage can be more fun than watching paint dry.</br>
