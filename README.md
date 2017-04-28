@@ -7,12 +7,12 @@
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
 - Leaflet 1.0.3 
 </br>  
-Display to user a map</br>
-Server polls USGS every 30 seconds for earthquake events</br>
-When new earthquake event is received by server, push such information to client browser</br>
-Reposition map on client and display some information about the recent earthquake</br>
+Display to user a map.</br>
+Server polls USGS every 30 seconds for earthquakes that have occured within the last 15 minutes.</br>Note that the USGS information is not necessarily instantaneous meaning for example an earthquake that occurred 10 minutes ago might only be reported by the USGS within the last few minutes.</br>
+The intent of the webpage is to display the last earthquake that has occurred.</br>
+When a new earthquake event is received by the server, such inforrmation is pushed to the client browser repositioning the and displaying some information about the event.</br>
 </br>
-This can be more fun than watching paint dry</br>
+This can be more fun than watching paint dry.</br>
 
 Deployment: https://shake-shake.herokuapp.com/</br>
 
