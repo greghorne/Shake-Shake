@@ -142,7 +142,7 @@ __END__
 <script>
 
   var marker;
-  var trace = false; 
+  var trace = true; 
 
   $(document).ready(function() {
 
