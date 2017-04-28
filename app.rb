@@ -150,11 +150,12 @@ __END__
 
     eventSource.addEventListener('message', function(event){
 
-      if (false) console.log(event.data);
       json = JSON.parse(event.data);
-      if (trace) console.log(json);
 
       if (json['msg'] != "0") {
+        
+        if (trace) console.log(json);
+
         longitudeX = json['x'];
         latitudeY  = json['y'];
         msg        = json['msg'];
@@ -168,7 +169,11 @@ __END__
         map.setView(L.latLng(latitudeY, longitudeX), 8);   // change to 16
 
         $("#map").effect("shake", "times: 20");
+      } else {
+        var d = new Date();
+        if (trace) console.log("msg: " + d.to_s);
       }
+
     }, false);
 
     eventSource.addEventListener('error', function(event) {
