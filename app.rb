@@ -39,39 +39,46 @@ get '/streamer', provides: 'text/event-stream' do
     while !out.closed?
 
       # 60 (seconds) * 120 (minutes)
-      offsetTime  = 60 * 120 
+      offsetTime  = 60 * 15 
 
       # rest api call to usgs
       response    = JSON.parse(getUSGS(offsetTime))
 
-      # retrieve the first feature (earthquake) from the rest response
-      fetched_earthquake_code = response['features'][0]['properties']['code']
+      count = response['metadata']['count'].to_i
+      puts count
 
-      if (current_earthquake_code != fetched_earthquake_code)
+      if count > 0 
+        # retrieve the first feature (earthquake) from the rest response
+        fetched_earthquake_code = response['features'][0]['properties']['code']
 
-        current_earthquake_code = fetched_earthquake_code
+        if (current_earthquake_code != fetched_earthquake_code)
 
-        # magnitude = response['features'][0]['properties']['mag']
-        time      = response['features'][0]['properties']['time']
-        code      = current_earthquake_code
-        title     = response['features'][0]['properties']['title']
-        lngX      = response['features'][0]['geometry']['coordinates'][0]
-        latY      = response['features'][0]['geometry']['coordinates'][1]
-        depth     = response['features'][0]['geometry']['coordinates'][2]
+          current_earthquake_code = fetched_earthquake_code
 
-        if trace 
-          puts "=========================================="
-          puts "title: " + title.to_s
-          puts "code:  " + code.to_s
-          puts "time:  " + Time.at(time/1000).to_s
-          puts "coords:" + lngX.to_s + ", " + latY.to_s
-          puts "depth: " + depth.to_s + " km"
-          puts "now:   " + Time.now.to_s
-          puts "=========================================="
-          puts 
+          # magnitude = response['features'][0]['properties']['mag']
+          time      = response['features'][0]['properties']['time']
+          code      = current_earthquake_code
+          title     = response['features'][0]['properties']['title']
+          lngX      = response['features'][0]['geometry']['coordinates'][0]
+          latY      = response['features'][0]['geometry']['coordinates'][1]
+          depth     = response['features'][0]['geometry']['coordinates'][2]
+
+          if trace 
+            puts "=========================================="
+            puts "title: " + title.to_s
+            puts "code:  " + code.to_s
+            puts "time:  " + Time.at(time/1000).to_s
+            puts "coords:" + lngX.to_s + ", " + latY.to_s
+            puts "depth: " + depth.to_s + " km"
+            puts "now:   " + Time.now.to_s
+            puts "=========================================="
+            puts 
+          end
+
+          data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
+        else
+          data = "data: {\"msg\":\"0\"}\n\n"
         end
-
-        data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
       else
         data = "data: {\"msg\":\"0\"}\n\n"
       end
