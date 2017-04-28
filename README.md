@@ -1,7 +1,9 @@
 # push_sinatra
 **Server-Sent Events**
 
-*Study of HTML5 SSE*
+*Study of HTML5 SSE*</br>
+
+- The purpose of this project is to implement Server-Sent Events which is a server to client communication connection (one-way).  Explore web-sockets if 2-way communication is needed.  Please note that Server-Sent Events are not supported my IE/Edge.
 
 - ruby 2.4.0p0 (2016-12-24 revision 57164) [i686-linux] 
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
@@ -18,6 +20,6 @@
 - If the initial map displayed is a view of the USA with no marker on the map signifying an earthquake, this means an earthquake has not been recorded in the last 15 minutes.  Thus just leave the webpage as is and wait.
 </br>
 This can be more fun than watching paint dry.</br>
-
+</br>
 Deployment: https://shake-shake.herokuapp.com/</br>
 
