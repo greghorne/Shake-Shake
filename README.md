@@ -1,7 +1,7 @@
 # push_sinatra
 **Server-Sent Events**
 
-*Study of HTML5 SSE*</br>
+*Implementation of HTML5 SSE*</br>
 
 - The purpose of this project is to implement Server-Sent Events which is a server to client communication connection (one-way).  Explore web-sockets if 2-way communication is needed.  Please note that Server-Sent Events are not supported my IE/Edge.
 
