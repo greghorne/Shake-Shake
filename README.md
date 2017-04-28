@@ -7,7 +7,9 @@
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
 - Leaflet 1.0.3 
 </br>  
+
 *What this website does...*
+
 - Display to user a map.
 - Server polls USGS every 30 seconds for earthquakes that have occured within the last 15 minutes.
 - Note that the USGS information is not necessarily instantaneous meaning for example an earthquake that occurred 10 minutes ago might only be reported by the USGS within the last few minutes.
