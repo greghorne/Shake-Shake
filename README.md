@@ -1,7 +1,7 @@
 # push_sinatra
 **Server-Sent Events (SSE in HTML5)**
 
-*Implementation*</br>
+*Implementation:*</br>
 
 - The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Please note that Server-Sent Events are not supported my IE/Edge.
 
@@ -10,7 +10,7 @@
 - Leaflet 1.0.3 
 </br>  
 
-*What this website does...*
+*What this website does:*
 
 - Display to user a map.
 - Server polls USGS every 30 seconds for earthquakes that have occured within the last 15 minutes.
