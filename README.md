@@ -15,6 +15,7 @@
 - Note that the USGS information is not necessarily instantaneous meaning for example an earthquake that occurred 10 minutes ago might only be reported by the USGS within the last few minutes.
 - The intent of the webpage is to display the last earthquake that has occurred.
 - When a new earthquake event is received by the server, such inforrmation is pushed to the client browser repositioning the and displaying some information about the event.
+- If the initial map displayed is a view of the USA with no marker on the map signifying an earthquake, this means an earthquake has not been recorded in the last 15 minutes.  Thus just leave the webpage as is and wait.
 </br>
 This can be more fun than watching paint dry.</br>
 
