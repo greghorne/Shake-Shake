@@ -3,7 +3,8 @@
 
 *Implementation:*</br>
 
-- The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Please note that Server-Sent Events are not supported my IE/Edge.
+- The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Please note that Server-Sent Events are not supported by IE/Edge as of this writing.
+- Wikipedia: https://en.wikipedia.org/wiki/Server-sent_events
 
 - ruby 2.4.0p0 (2016-12-24 revision 57164) [i686-linux] 
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
