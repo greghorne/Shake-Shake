@@ -198,7 +198,7 @@ __END__
     var longitude = -96.9873046875
     var zoom = 4
 
-    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         // attribution: attributionOSM,
         subdomains: ['a', 'b', 'c']
     });
