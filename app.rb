@@ -38,14 +38,17 @@ get '/streamer', provides: 'text/event-stream' do
 
     while !out.closed?
 
-      # 60 (seconds) * 120 (minutes)
-      offsetTime  = 60 * 15 
+      # 60 (seconds) * minutes
+      minutes = 15
+      offsetTime  = 60 * minutes.to_i
 
       # rest api call to usgs
       response    = JSON.parse(getUSGS(offsetTime))
 
       count = response['metadata']['count'].to_i
-      puts count
+      if (trace) then 
+        puts "earthquake count: " + count.to_s + "  last: " + minutes.to_s + " minutes" 
+      end
 
       if count > 0 
         # retrieve the first feature (earthquake) from the rest response
@@ -77,12 +80,11 @@ get '/streamer', provides: 'text/event-stream' do
 
           data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
         else
-          data = "data: {\"msg\":\"0\"}\n\n"
+          data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
         end
       else
-        data = "data: {\"msg\":\"0\"}\n\n"
+        data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
       end
-
       out << data
       sleep 30
 
@@ -151,7 +153,6 @@ __END__
     eventSource.addEventListener('message', function(event){
 
       json = JSON.parse(event.data);
-
       if (json['msg'] != "0") {
         
         if (trace) console.log(json);
@@ -171,7 +172,11 @@ __END__
         $("#map").effect("shake", "times: 20");
       } else {
         var d = new Date();
-        if (trace) console.log("msg: " + d);
+        if (trace) { 
+          // console.log("msg: " + d);
+          json['msg'] = d;
+          console.log(json);
+        }
       }
 
     }, false);
