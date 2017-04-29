@@ -5,7 +5,7 @@
 *Implementation:*
 
 - This application is written in Ruby/JS and deployed as a Sinatra application.
-- The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Note that Server-Sent Events are not supported by IE/Edge as of this writing.
+- The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Note that Server-Sent Events are not supported by IE/Edge as of this writing.  
 - Wikipedia: https://en.wikipedia.org/wiki/Server-sent_events
 
 *Tools/Components:*
@@ -32,7 +32,6 @@
 - When a new earthquake event is received by the server, such information is pushed to the client browser repositioning the map and displaying information about the event.
 - If the initial map displayed is a view of the entire USA with no marker on the map signifying an earthquake, this means an earthquake has not been recorded in the last 15 minutes.  Thus just leave the webpage as is and wait.
 - If the browser's developer's console is open, one can observe the messages being sent to the client from the server.
-</br>
 
 This webpage can be more fun than watching paint dry.
 
