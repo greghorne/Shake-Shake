@@ -137,7 +137,6 @@ __END__
 </html>
 
 
-
 @@ my_receiver
 <pre id='my_receiver'></pre>
 
@@ -150,6 +149,9 @@ __END__
 
     var eventSource = new EventSource('/streamer');
 
+    // =======================================
+    // event - message =======================
+    // =======================================
     eventSource.addEventListener('message', function(event){
 
       json = JSON.parse(event.data);
@@ -180,7 +182,12 @@ __END__
       }
 
     }, false);
+    // =======================================
 
+
+    // =======================================
+    // event - error =========================
+    // =======================================
     eventSource.addEventListener('error', function(event) {
       // if this event fires it will automatically try and reconnect
       if (trace) {
@@ -190,7 +197,12 @@ __END__
         console.log("--------------------")
       }
     }, false);
+    // =======================================
 
+
+    // =======================================
+    // event - close =========================
+    // =======================================
     eventSource.addEventListener('close', function(event) {
       if (trace) {
         console.log("--------------------")
@@ -199,6 +211,7 @@ __END__
         console.log("--------------------")
       }
     }, false)
+    // =======================================
 
 
     // =======================================
@@ -208,9 +221,11 @@ __END__
     var longitude = -96.9873046875
     var zoom = 4
 
+    var attributionOSM = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        // attribution: attributionOSM,
-        subdomains: ['a', 'b', 'c']
+      attribution: attributionOSM,
+      subdomains: ['a', 'b', 'c']
     });
 
     var map = L.map('map', {
@@ -223,8 +238,6 @@ __END__
     // =======================================
     // leaflet end <<<<<<<<<<<<<<<<<<<<<<<<<<<
     // =======================================
-
-
   });
 
 </script>
