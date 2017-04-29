@@ -5,7 +5,8 @@
 *Implementation:*
 
 - This application is written in Ruby/JS and deployed as a Sinatra application.
-- The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Note that Server-Sent Events are not supported by IE/Edge as of this writing.  
+- The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  	
+- Note that Server-Sent Events are not supported by IE/Edge as of this writing.  
 - Wikipedia: https://en.wikipedia.org/wiki/Server-sent_events
 
 *Tools/Components:*
