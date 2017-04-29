@@ -16,7 +16,7 @@
 
 *Local Deployment/Execution (Ubuntu):*
 
-- Clone project to a folder
+- Clone this repository to a folder
 - Confirm ruby, sinatra and sinatra-contrib is installed
 - Execute "bundle install"
 - Execute "ruby app.rb -o 0.0.0.0"
