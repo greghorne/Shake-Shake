@@ -129,8 +129,26 @@ __END__
 
     <style>
       #map { width: 100%; 
-             height: 100%
+             height: 95%
            }
+      #msg { width: 100%; 
+             height: 5%;
+             color: white;
+             background-color: gray;
+             position: relative;
+
+            border: 1px solid #000;
+            text-align: center;
+             /*line-height:3em;overflow:auto;padding:5px;*/
+           }
+      #msg span {
+        display: block;
+        position: relative;
+        top: 50%;
+        transform: translateY(0, -50%);
+      }
+
+
     </style>
   </head> 
   <body><%= yield %></body>
@@ -178,6 +196,8 @@ __END__
           // console.log("msg: " + d);
           json['msg'] = d;
           console.log(json);
+          console.log("trace...")
+          $("#msg").text(d + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
         }
       }
 
@@ -244,4 +264,5 @@ __END__
 
 <form>
   <div id='map'></div>
+  <center><div id="msg"><span></span></div></center>
 </form>
