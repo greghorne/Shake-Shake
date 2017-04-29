@@ -2,17 +2,24 @@
 **Server-Sent Events (SSE in HTML5)**
 
 
-*Implementation:*</br>
+*Implementation:*
 
 - The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  Explore <i>WebSockets</i> if 2-way communication is needed.  Note that Server-Sent Events are not supported by IE/Edge as of this writing.
 - Wikipedia: https://en.wikipedia.org/wiki/Server-sent_events
 
-*Tools/Components:*</br>
+*Tools/Components:*
 
 - ruby 2.4.0p0 (2016-12-24 revision 57164) [i686-linux] 
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
 - Leaflet 1.0.3 (https://en.wikipedia.org/wiki/Leaflet_(software))
 - OpenStreetMaps (https://en.wikipedia.org/wiki/OpenStreetMap)
+
+*Local Deployment/Execution (Ubuntu):*
+
+- Clone project to a folder
+- Execute "bundle install"
+- Execute "ruby app.rb -o 0.0.0.0"
+- Open a web browser and navigate to: "0.0.0.0:4567"
 
 *What this website does:*
 
@@ -25,7 +32,7 @@
 - If the browser's developer's console is open, one can observe the messages being sent to the client from the server.
 </br>
 
-This webpage can be more fun than watching paint dry.</br>
-</br>
-Deployment: https://shake-shake.herokuapp.com/</br>
+This webpage can be more fun than watching paint dry.
+
+Deployment: https://shake-shake.herokuapp.com/
 
