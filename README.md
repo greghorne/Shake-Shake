@@ -2,7 +2,7 @@
 **Server-Sent Events (SSE in HTML5)**
 
 
-*Implementation:*
+*Overview:*
 
 - This application is written in Ruby/JS and deployed as a Sinatra application.
 - The purpose of this project is to demonstrate <i>Server-Sent Events</i> which is a server to client communication protocol (one-way).  	
@@ -15,6 +15,7 @@
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
 - Leaflet 1.0.3 (https://en.wikipedia.org/wiki/Leaflet_(software))
 - OpenStreetMaps (https://en.wikipedia.org/wiki/OpenStreetMap)
+- Deployment: Heroku free dyno
 
 *Local Deployment/Execution (Ubuntu):*
 
