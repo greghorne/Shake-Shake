@@ -263,5 +263,5 @@ __END__
 
 <form>
   <div id='map'></div>
-  <div class="vertical-container"><div id="msg">Greg</div></div>
+  <div class="vertical-container"><div id="msg"></div></div>
 </form>
