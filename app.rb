@@ -128,26 +128,27 @@ __END__
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
-      #map { width: 100%; 
-             height: 95%
+      html { background-color: gray}
+
+      #map { 
+             width: 100%; 
+             height: 96%
            }
-      #msg { width: 100%; 
-             height: 5%;
+
+      #msg { 
              color: white;
              background-color: gray;
-             position: relative;
-
-            border: 1px solid #000;
-            text-align: center;
-             /*line-height:3em;overflow:auto;padding:5px;*/
            }
-      #msg span {
-        display: block;
-        position: relative;
-        top: 50%;
-        transform: translateY(0, -50%);
-      }
 
+      .vertical-container {
+             height: 4%;
+             display: -webkit-flex;
+             display:         flex;
+             -webkit-align-items: center;
+                     align-items: center;
+             -webkit-justify-content: center;
+                     justify-content: center;
+          }
 
     </style>
   </head> 
@@ -193,10 +194,8 @@ __END__
       } else {
         var d = new Date();
         if (trace) { 
-          // console.log("msg: " + d);
           json['msg'] = d;
           console.log(json);
-          console.log("trace...")
           $("#msg").text(d + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
         }
       }
@@ -264,5 +263,5 @@ __END__
 
 <form>
   <div id='map'></div>
-  <center><div id="msg"><span></span></div></center>
+  <div class="vertical-container"><div id="msg">Greg</div></div>
 </form>
