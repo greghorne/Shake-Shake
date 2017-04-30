@@ -128,11 +128,19 @@ __END__
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
-      html { background-color: gray}
+
+      html, body {
+        background-color: gray;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
 
       #map { 
              width: 100%; 
-             height: 96%
+             height: 96%;
+             margin: 0;
+             padding: 0;
            }
 
       #msg { 
