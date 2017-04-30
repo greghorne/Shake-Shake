@@ -78,6 +78,9 @@ get '/streamer', provides: 'text/event-stream' do
             puts 
           end
 
+          # ==========================================================================================
+          # the string sent from the server to the client must start with "data:" and end with "\n\n"
+          # ==========================================================================================
           data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
         else
           data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
@@ -85,6 +88,7 @@ get '/streamer', provides: 'text/event-stream' do
       else
         data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
       end
+
       out << data
       sleep 30
 
@@ -96,15 +100,18 @@ end
 # ================================================
 def getUSGS(offsetTime)
 
+  # USGS REST API
   https = 'https://earthquake.usgs.gov/fdsnws/event/1/query'
-  response = RestClient.get https, {params: 
-                                      {
-                                        :format => 'geojson',
-                                        :starttime => Time.now.utc - offsetTime,
-                                        :orderby => 'time',
-                                        :eventtype => 'earthquake'
-                                      }
-                                   }
+
+  response = RestClient.get https, {
+    params: {
+      :format => 'geojson',
+      :starttime => Time.now.utc - offsetTime,
+      :orderby => 'time',
+      :eventtype => 'earthquake'
+    }
+  }
+
   return response
 end
 # ================================================
@@ -131,32 +138,32 @@ __END__
 
       html, body {
         background-color: gray;
-        height: 100%;
+        height:100%;
         margin: 0;
         padding: 0;
       }
 
       #map { 
-             width: 100%; 
-             height: 96%;
-             margin: 0;
-             padding: 0;
-           }
+        width: 100%; 
+        height: 96%;
+        margin: 0;
+        padding: 0;
+      }
 
       #msg { 
-             color: white;
-             background-color: gray;
-           }
+        color: white;
+        background-color: gray;
+      }
 
       .vertical-container {
-             height: 4%;
-             display: -webkit-flex;
-             display:         flex;
-             -webkit-align-items: center;
-                     align-items: center;
-             -webkit-justify-content: center;
-                     justify-content: center;
-          }
+        height: 4%;
+        display: -webkit-flex;
+        display:         flex;
+        -webkit-align-items: center;
+               align-items: center;
+        -webkit-justify-content: center;
+               justify-content: center;
+      }
 
     </style>
   </head> 
@@ -186,25 +193,33 @@ __END__
         
         if (trace) console.log(json);
 
+        // extract some data from json object
         longitudeX = json['x'];
         latitudeY  = json['y'];
         msg        = json['msg'];
         depth      = json['z'];
         time       = json['utc'];
 
+        // if any, remove current map marker
         if (marker !== undefined) map.removeLayer(marker);
 
+        // add new marker to map
         marker = L.marker([latitudeY, longitudeX]).addTo(map);
+
+        // add marker popup informaiton and open popup window
         marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
-        map.setView(L.latLng(latitudeY, longitudeX), 8);   // change to 16
+
+        // pan and zoom to new map (earthquake) location
+        map.setView(L.latLng(latitudeY, longitudeX), 8);
 
         $("#map").effect("shake", "times: 20");
+
       } else {
-        var d = new Date();
         if (trace) { 
-          json['msg'] = d;
+          var date = new Date();
+          json['msg'] = date;
           console.log(json);
-          $("#msg").text(d + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
+          $("#msg").text(date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
         }
       }
 
@@ -244,12 +259,16 @@ __END__
     // =======================================
     // leaflet begin >>>>>>>>>>>>>>>>>>>>>>>>>
     // =======================================
+
+    // initial map settings/view
     var latitude = 35.746512259918504
     var longitude = -96.9873046875
     var zoom = 4
 
+    // kudos
     var attributionOSM = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
 
+    // define osm
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: attributionOSM,
       subdomains: ['a', 'b', 'c']
@@ -258,10 +277,12 @@ __END__
     var map = L.map('map', {
       center: [latitude, longitude],
       zoom: zoom,
-      layers: [osm],
-      loadingControl: true
+      layers: [osm]
     });
+
+    // scalebar
     L.control.scale().addTo(map);
+
     // =======================================
     // leaflet end <<<<<<<<<<<<<<<<<<<<<<<<<<<
     // =======================================
