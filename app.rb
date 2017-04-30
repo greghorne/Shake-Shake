@@ -5,6 +5,8 @@ require 'json'
 
 set server: 'thin'
 connections = []
+
+# turn "puts" and "console.log" statements on/off
 trace = true
 
 # ================================================
@@ -44,6 +46,10 @@ get '/streamer', provides: 'text/event-stream' do
 
       # rest api call to usgs
       response    = JSON.parse(getUSGS(offsetTime))
+
+      #
+      # check response object for error
+      #
 
       count = response['metadata']['count'].to_i
       if (trace) then 
@@ -153,9 +159,13 @@ __END__
       #msg { 
         color: white;
         background-color: gray;
+        margin: 0;
+        padding: 0;
       }
 
       .vertical-container {
+        margin: 0;
+        padding: 0;
         height: 4%;
         display: -webkit-flex;
         display:         flex;
@@ -215,12 +225,17 @@ __END__
         $("#map").effect("shake", "times: 20");
 
       } else {
-        if (trace) { 
-          var date = new Date();
-          json['msg'] = date;
-          console.log(json);
-          $("#msg").text(date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
-        }
+        if (trace) console.log(json);
+
+        var count = json["usgs earthquake count"]
+
+        if (count === 0) $("#msg").css('color', 'rgb(165,255,144)')
+        else if (count < 3) $("#msg").css('color', 'yellow')
+        else $("#msg").css('color', 'rgb(245,107,97)')
+
+        var date = new Date();
+        json['msg'] = date;
+        $("#msg").text(date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
       }
 
     }, false);
