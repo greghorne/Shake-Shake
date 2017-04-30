@@ -144,35 +144,36 @@ __END__
 
       html, body {
         background-color: gray;
-        height:100%;
-        margin: 0;
-        padding: 0;
+        height: 100%;
+        margin:   0;
+        padding:  0;
+
       }
 
       #map { 
         width: 100%; 
         height: 96%;
-        margin: 0;
-        padding: 0;
-      }
-
-      #msg { 
-        color: white;
-        background-color: gray;
-        margin: 0;
+        margin:  0;
         padding: 0;
       }
 
       .vertical-container {
-        margin: 0;
-        padding: 0;
-        height: 4%;
+        margin:   0;
+        padding:  0;
+        /*height:  4%;*/
         display: -webkit-flex;
         display:         flex;
         -webkit-align-items: center;
                align-items: center;
         -webkit-justify-content: center;
                justify-content: center;
+      }
+
+      #msg { 
+        color: white;
+        background-color: gray;
+        margin:  0;
+        padding: 0;
       }
 
     </style>
@@ -198,6 +199,8 @@ __END__
     // =======================================
     eventSource.addEventListener('message', function(event){
 
+      var divText = "";
+
       json = JSON.parse(event.data);
       if (json['msg'] != "0") {
         
@@ -222,6 +225,9 @@ __END__
         // pan and zoom to new map (earthquake) location
         map.setView(L.latLng(latitudeY, longitudeX), 8);
 
+        // $("#msg").text("");
+        divText = "";
+
         $("#map").effect("shake", "times: 20");
 
       } else {
@@ -235,8 +241,10 @@ __END__
 
         var date = new Date();
         json['msg'] = date;
-        $("#msg").text(date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
+        // $("#msg").text(date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
+        divText = date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)"
       }
+      $("#msg").text(divText);
 
     }, false);
     // =======================================
