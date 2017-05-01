@@ -263,13 +263,14 @@ __END__
         var count = json["usgs earthquake count"]
 
         if (count === 0) $("#msg").css('color', 'rgb(165,255,144)')
-        else if (count < 3) $("#msg").css('color', 'yellow')
+        else if (count < 6) $("#msg").css('color', 'yellow')
         else $("#msg").css('color', 'rgb(245,107,97)')
 
         var date = new Date();
         json['msg'] = date;
 
         divText = date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)"
+
       }
       $("#msg").text(divText);
 
