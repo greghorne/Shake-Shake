@@ -4,16 +4,28 @@ require 'rest-client'
 require 'json'
 
 set server: 'thin'
+
+
+# ================================================
+# variables ======================================
+# ================================================
 connections = []
 
-# turn "puts" and "console.log" statements on/off
+# 60 (seconds) * minutes
+minutes = 15
+offsetTime  = 60 * minutes.to_i
+
+# "puts" and "console.log" statements on/off
 trace = true
+# ================================================
+
 
 # ================================================
 get '/' do
   erb :my_receiver
 end
 # ================================================
+
 
 # ================================================
 get '/streamer', provides: 'text/event-stream' do
@@ -29,6 +41,7 @@ get '/streamer', provides: 'text/event-stream' do
     # save connections to array
     connections << out
 
+    # callback to remove connection from array
     out.callback{connections.delete(out)}
 
     if trace 
@@ -40,65 +53,80 @@ get '/streamer', provides: 'text/event-stream' do
 
     while !out.closed?
 
-      # 60 (seconds) * minutes
-      minutes = 15
-      offsetTime  = 60 * minutes.to_i
-
       # rest api call to usgs
-      response    = JSON.parse(getUSGS(offsetTime))
+      response = getUSGS(offsetTime)
 
-      #
-      # check response object for error
-      #
+      data = ""
 
-      count = response['metadata']['count'].to_i
-      if (trace) then 
-        puts "earthquake count: " + count.to_s + "  last: " + minutes.to_s + " minutes" 
-      end
+      # check response code
+      if (response.code.to_s === "200")  then
 
-      if count > 0 
-        # retrieve the first feature (earthquake) from the rest response
-        fetched_earthquake_code = response['features'][0]['properties']['code']
+        # parse json string
+        response = JSON.parse(response)
 
-        if (current_earthquake_code != fetched_earthquake_code)
+        # count = number of earthquakes returned
+        count = response['metadata']['count'].to_i
 
-          current_earthquake_code = fetched_earthquake_code
+        if (trace) then 
+          puts "earthquake count: " + count.to_s + "  last: " + minutes.to_s + " minutes" 
+          puts ""
+        end
 
-          # magnitude = response['features'][0]['properties']['mag']
-          time      = response['features'][0]['properties']['time']
-          code      = current_earthquake_code
-          title     = response['features'][0]['properties']['title']
-          lngX      = response['features'][0]['geometry']['coordinates'][0]
-          latY      = response['features'][0]['geometry']['coordinates'][1]
-          depth     = response['features'][0]['geometry']['coordinates'][2]
+        if count > 0 
+          # retrieve the first feature (earthquake) from the rest api response
+          fetched_earthquake_code = response['features'][0]['properties']['code']
 
-          if trace 
-            puts "=========================================="
-            puts "title: " + title.to_s
-            puts "code:  " + code.to_s
-            puts "time:  " + Time.at(time/1000).to_s
-            puts "coords:" + lngX.to_s + ", " + latY.to_s
-            puts "depth: " + depth.to_s + " km"
-            puts "now:   " + Time.now.to_s
-            puts "=========================================="
-            puts 
+          # check that the latest earthquake we have is not not equal to the latest earthquake
+          # returned by usgs; if the codes are equal, then we already have and are displaying
+          # the "latest" earthquake... thus do nothing to the map
+          if (current_earthquake_code != fetched_earthquake_code)
+
+            current_earthquake_code = fetched_earthquake_code
+
+            # magnitude = response['features'][0]['properties']['mag']
+            time      = response['features'][0]['properties']['time']
+            code      = current_earthquake_code
+            title     = response['features'][0]['properties']['title']
+            lngX      = response['features'][0]['geometry']['coordinates'][0]
+            latY      = response['features'][0]['geometry']['coordinates'][1]
+            depth     = response['features'][0]['geometry']['coordinates'][2]
+
+            if trace 
+              puts "=========================================="
+              puts "title: " + title.to_s
+              puts "code:  " + code.to_s
+              puts "time:  " + Time.at(time/1000).to_s
+              puts "coords:" + lngX.to_s + ", " + latY.to_s
+              puts "depth: " + depth.to_s + " km"
+              puts "now:   " + Time.now.to_s
+              puts "=========================================="
+              puts 
+            end
+
+            # ==========================================================================================
+            # the string sent from the server to the client must start with "data:" and end with "\n\n"
+            # ==========================================================================================
+            data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
+          else
+            # data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
           end
-
-          # ==========================================================================================
-          # the string sent from the server to the client must start with "data:" and end with "\n\n"
-          # ==========================================================================================
-          data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
         else
+          # data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
+        end
+
+        if (data === "") then
           data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
         end
+
+        out << data
+        sleep 30
+
       else
-        data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
+        # most often, server was down (or not responding)
+        puts "REST API Call: error"
       end
-
-      out << data
-      sleep 30
-
     end
+
   end
 end
 # ================================================
@@ -240,7 +268,7 @@ __END__
 
         var date = new Date();
         json['msg'] = date;
-        // $("#msg").text(date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)");
+
         divText = date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)"
       }
       $("#msg").text(divText);
