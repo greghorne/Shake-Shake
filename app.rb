@@ -342,7 +342,7 @@ __END__
 
             var img = L.DomUtil.create('img');
 
-            img.src = '/images/help.png';
+            img.src = '/images/help1.png';
             img.addEventListener('click', function () {
               console.log("msg from help...")
             })
