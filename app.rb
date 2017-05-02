@@ -158,7 +158,7 @@ __END__
   <head> 
     <title>Shake-Shake</title> 
     <meta charset="utf-8" />
-    <link rel="icon" href="earthquakes.ico" type="image/x-icon"/>
+    <link rel="icon" href="/images/earthquakes.ico" type="image/x-icon"/>
     
     <link rel="stylesheet" href="/leaflet.css" crossorigin=""/>
     <link rel="stylesheet" href="/jquery-ui.css">
@@ -242,10 +242,10 @@ __END__
         top: 5%;
         width: 100%;
         text-align: center;
-        margin-top: 30px;
+        margin-top: 20px;
         color: white;
-        /*margin: 10px, 20px, 10px, 20px;*/
-        /*padding: 20px 10px 20px 10px;*/
+/*        margin: 10px, 20px, 10px, 20px;
+        padding: 20px 10px 20px 10px;*/
     }
 
     .overlay a {
@@ -447,18 +447,22 @@ __END__
 
   <div id="myNav" class="overlay" onclick="closeNav();">
     <a class="closebtn" onclick="closeNav();" style=cursor:pointer>&times;</a>
+
     <div class="overlay-content"><h1>Shake-Shake</h1>
-    <img src="/images/earthquake.png" height="96" width="96">
-    </br></br>Display the latest earthquake on a map based on USGS information.
-    </br></br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
-    </br></br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
-    </br></br>This website is hosted at<a href="https://www.heroku.com/" target="_blank" class="heroku_text">Heroku</a>using a free dyno.
-    </br></br>This website is for demonstration purposes.  Thanks for visiting.
-    </br></br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
-    </br></br></br><a href="https://www.ruby-lang.org" target="_blank"><img src="/images/Ruby_logo.svg" class="image_type1"></a>
-    &nbsp;&nbsp;<a href="https://www.javascript.com" target="_blank"><img src="/images/js2.png" class="image_type1"></a>
-    &nbsp;&nbsp;<a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank"><img src="/images/usgs.jpg" class="image_type2"></a>
-    &nbsp;&nbsp;<a href="http://leafletjs.com" target="_blank"><img src="/images/leaflet.png" class="image_type3"></a></div></div>  
+      <img src="/images/earthquake.png" height="96" width="96">
+      </br></br>Display the latest earthquake on a map based on USGS information.
+      </br></br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
+      </br></br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way; think twitter).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
+      </br></br>This website is hosted at<a href="https://www.heroku.com/" target="_blank" class="heroku_text">Heroku</a>using a free dyno.
+      </br></br>This website is for demonstration purposes.  Thanks for visiting.
+      </br></br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
+      </br></br></br><a href="https://www.ruby-lang.org" target="_blank"><img src="/images/Ruby_logo.svg" class="image_type1"></a>
+      &nbsp;&nbsp;<a href="https://www.javascript.com" target="_blank"><img src="/images/js2.png" class="image_type1"></a>
+      &nbsp;&nbsp;<a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank"><img src="/images/usgs.jpg" class="image_type2"></a>
+      &nbsp;&nbsp;<a href="http://leafletjs.com" target="_blank"><img src="/images/leaflet.png" class="image_type3"></a>
+      &nbsp;&nbsp;<a href="https://wiki.openstreetmap.org/wiki/Main_Page" target="_blank"><img src="/images/osm.png" class="image_type1"></a>
+    </div>
+  </div>  
   
   <div id='map'></div>
   <div class="vertical-container"><div id="msg"></div></div>

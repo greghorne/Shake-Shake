@@ -25,8 +25,8 @@
 - sinatra (1.4.8), sinatra-contrib (1.4.7)
 - Leaflet 1.0.3 (https://en.wikipedia.org/wiki/Leaflet_(software))
 - OpenStreetMaps (https://en.wikipedia.org/wiki/OpenStreetMap)
-- USGS REST API Server
-- Deployment: Heroku free dyno
+- USGS REST API Server (https://earthquake.usgs.gov/fdsnws/event/1/)
+- Deployment: Heroku free dyno (https://www.heroku.com)
 
 *Local Deployment/Execution (Ubuntu):*
 
