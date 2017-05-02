@@ -154,6 +154,7 @@ end
 __END__
 
 @@ layout
+<!DOCTYPE html>
 <html>
   <head> 
     <title>Shake-Shake</title> 
