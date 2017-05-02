@@ -224,8 +224,8 @@ __END__
       }
 
     .overlay {
-        height: 100%;
-        width: 100%;
+        height: 0%;
+        width: 0%;
         position: fixed;
         z-index: 1;
         top: 0;
