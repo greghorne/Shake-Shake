@@ -160,13 +160,17 @@ __END__
     <meta charset="utf-8" />
     <link rel="icon" href="earthquakes.ico" type="image/x-icon"/>
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin=""/>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="/leaflet.css" crossorigin=""/>
+    <link rel="stylesheet" href="/jquery-ui.css">
     
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" crossorigin=""></script>
+    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <script src="/jquery-1.12.4.js"></script>
+
+    <!-- <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" crossorigin=""></script>-->
+    <script src="/leaflet.js"  crossorigin=""></script>
+
     <!-- // <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="/jquery-ui.js"></script>
 
     <style>
 
@@ -319,7 +323,6 @@ __END__
     // kudos
     var attributionOSM = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
 
-    // var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     var osm = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {  
       attribution: attributionOSM,
       subdomains: ['a', 'b', 'c']
@@ -334,9 +337,26 @@ __END__
     // scalebar
     L.control.scale().addTo(map);
 
-    // =======================================
-    // leaflet end <<<<<<<<<<<<<<<<<<<<<<<<<<<
-    // =======================================
+    L.Control.Help = L.Control.extend({
+        onAdd: function(map) {
+
+            var img = L.DomUtil.create('img');
+
+            img.src = '/images/help.png';
+            img.addEventListener('click', function () {
+              console.log("msg from help...")
+            })
+
+            return img;
+        },
+    });
+
+    L.control.help = function(opts) {
+        return new L.Control.Help(opts);
+    }
+
+    L.control.help({ position: 'topright' }).addTo(map);
+
   });
 
 </script>
@@ -345,3 +365,4 @@ __END__
   <div id='map'></div>
   <div class="vertical-container"><div id="msg"></div></div>
 </form>
+
