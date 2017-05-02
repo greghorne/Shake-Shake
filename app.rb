@@ -288,7 +288,7 @@ __END__
 
 <script>
 
-  if (typeof(EventSource) !== undefined) {
+  if (typeof(EventSource) !== "undefined") {
     var marker;
     var trace = true; 
 
