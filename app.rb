@@ -319,8 +319,8 @@ __END__
     // kudos
     var attributionOSM = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
 
-    // define osm
-    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    var osm = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {  
       attribution: attributionOSM,
       subdomains: ['a', 'b', 'c']
     });
