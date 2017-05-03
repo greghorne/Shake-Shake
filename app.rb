@@ -107,11 +107,7 @@ get '/streamer', provides: 'text/event-stream' do
             # the string sent from the server to the client must start with "data:" and end with "\n\n"
             # ==========================================================================================
             data = "data: {\"msg\":\"" + title.to_s + "\",\"x\":" + lngX.to_s + ",\"y\":" + latY.to_s + ",\"z\":" + depth.to_s + ",\"utc\":\"" + Time.at(time/1000).to_s + "\"}\n\n"
-          else
-            # data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
           end
-        else
-          # data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
         end
 
         if (data === "") then
@@ -157,130 +153,21 @@ __END__
 <html>
   <head> 
     <title>Shake-Shake</title> 
+
     <meta charset="utf-8" />
+
     <link rel="icon" href="/images/earthquakes.ico" type="image/x-icon"/>
-    
+
+    <!-- CSS     -->
+    <link rel="stylesheet" href="/stylesheet.css">
     <link rel="stylesheet" href="/leaflet.css" crossorigin=""/>
     <link rel="stylesheet" href="/jquery-ui.css">
     
-    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <!-- JS -->
     <script src="/jquery-1.12.4.js"></script>
-
-    <!-- <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg==" crossorigin=""></script>-->
     <script src="/leaflet.js"  crossorigin=""></script>
-
-    <!-- // <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> -->
     <script src="/jquery-ui.js"></script>
 
-    <style>
-
-      html, body {
-        background-color: gray;
-        height: 100%;
-        margin:   0;
-        padding:  0;
-      }
-
-      #map { 
-        width: 100%; 
-        height: 96%;
-        margin:  0;
-        padding: 0;
-        z-index: 0;
-      }
-
-      .vertical-container {
-        margin:   0;
-        padding:  0;
-        /*height:  4%;*/
-        display: -webkit-flex;
-        display:         flex;
-        -webkit-align-items: center;
-               align-items: center;
-        -webkit-justify-content: center;
-               justify-content: center;
-      }
-
-      #msg { 
-        color: white;
-        background-color: gray;
-        margin:  0;
-        padding: 0;
-        margin: 9px 0;
-        white-space: nowrap;
-      }
-      /*#msg{margin:4px 0;whitespace:nowrap;}*/
-
-      .image_type1 {
-        height: 42px;
-        width: 42px;
-      }
-
-      .image_type2 {
-        height: 42px;
-        width: 42px;
-      }
-
-      .image_type3 {
-        height: 42px;
-        width: 126px;
-      }
-
-    .overlay {
-        height: 0%;
-        width: 0%;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: rgba(46, 113, 197, 0.6);
-        /*background-color: rgba(181,152,152, 0.8);*/
-        overflow-x: hidden;
-        transition: 1s;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .overlay-content {
-        position: relative;
-        top: 5%;
-        width: 100%;
-        text-align: center;
-        margin-top: 20px;
-        color: white;
-/*        margin: 10px, 20px, 10px, 20px;
-        padding: 20px 10px 20px 10px;*/
-    }
-
-    .overlay a {
-        padding: 8px;
-        text-decoration: none;
-        /*font-size: 36px;*/
-        color: #686868;
-        /*display: block;*/
-        transition: 0.1s;
-    }
-
-    .overlay a:hover, .overlay a:focus {
-        color: #f1f1f1;
-    }
-
-    .overlay .closebtn {
-        position: absolute;
-        top: 20px;
-        right: 45px;
-        font-size: 60px;
-    }
-
-    @media screen and (max-height: 450px) {
-      .overlay a {font-size: 20px}
-      .overlay .closebtn {
-        font-size: 40px;
-        top: 15px;
-        right: 35px;
-      }
-    }
-
-    </style>
   </head> 
   <body><%= yield %></body>
 </html>
@@ -325,20 +212,15 @@ __END__
           marker = L.marker([latitudeY, longitudeX]).addTo(map);
 
           // pan and zoom to new map (earthquake) location
-          // map.setView(L.latLng(latitudeY, longitudeX), 8);
-          map.flyTo([latitudeY, longitudeX], 8)
-          
-
-          // $("#msg").text("");
+          if (!document.hidden) map.flyTo([latitudeY, longitudeX], 8)
+          else map.setView(L.latLng(latitudeY, longitudeX), 8);
+    
           divText = "";
 
           setTimeout(function() {
             $("#map").effect("shake", "times: 40");
-                    marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
+            marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
           }, 4000);
-
-          // add marker popup informaiton and open popup window
-          // marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
 
         } else {
           if (trace) console.log(json);
