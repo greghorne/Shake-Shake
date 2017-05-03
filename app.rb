@@ -206,7 +206,10 @@ __END__
         background-color: gray;
         margin:  0;
         padding: 0;
+        margin: 9px 0;
+        white-space: nowrap;
       }
+      /*#msg{margin:4px 0;whitespace:nowrap;}*/
 
       .image_type1 {
         height: 42px;
@@ -321,16 +324,21 @@ __END__
           // add new marker to map
           marker = L.marker([latitudeY, longitudeX]).addTo(map);
 
-          // add marker popup informaiton and open popup window
-          marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
-
           // pan and zoom to new map (earthquake) location
-          map.setView(L.latLng(latitudeY, longitudeX), 8);
+          // map.setView(L.latLng(latitudeY, longitudeX), 8);
+          map.flyTo([latitudeY, longitudeX], 8)
+          
 
           // $("#msg").text("");
           divText = "";
 
-          $("#map").effect("shake", "times: 20");
+          setTimeout(function() {
+            $("#map").effect("shake", "times: 40");
+                    marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
+          }, 4000);
+
+          // add marker popup informaiton and open popup window
+          // marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
 
         } else {
           if (trace) console.log(json);
