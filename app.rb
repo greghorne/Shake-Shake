@@ -11,9 +11,9 @@ set server: 'thin'
 # ================================================
 connections = []
 
-# 60 (seconds) * minutes
+seconds = 60
 minutes = 15
-offsetTime  = 60 * minutes.to_i
+offsetTime  = seconds.to_i * minutes.to_i
 
 # "puts" and "console.log" statements on/off
 trace = true
@@ -114,6 +114,7 @@ get '/streamer', provides: 'text/event-stream' do
           data = "data: {\"msg\":\"0\",\"usgs earthquake count\":" + count.to_s + ",\"in recent minutes\":" + minutes.to_s + "}\n\n"
         end
 
+        # send data to client
         out << data
       else
         # most often, server was down (or not responding)
@@ -121,7 +122,6 @@ get '/streamer', provides: 'text/event-stream' do
       end
       sleep 30
     end
-
   end
 end
 # ================================================
@@ -129,15 +129,17 @@ end
 # ================================================
 def getUSGS(offsetTime)
 
+  # offsetTime = seconds
+
   # USGS REST API
   https = 'https://earthquake.usgs.gov/fdsnws/event/1/query'
 
   response = RestClient.get https, {
     params: {
-      :format => 'geojson',
-      :starttime => Time.now.utc - offsetTime,
-      :orderby => 'time',
-      :eventtype => 'earthquake'
+      :format     => 'geojson',
+      :starttime  => Time.now.utc - offsetTime,
+      :orderby    => 'time',
+      :eventtype  => 'earthquake'
     }
   }
 
@@ -210,9 +212,15 @@ __END__
           // add new marker to map
           marker = L.marker([latitudeY, longitudeX]).addTo(map);
 
+          // ================================================================================
           // pan and zoom to new map (earthquake) location
+          // ================================================================================
+          // unknown reason; if the webpage's tab is not active, the map.flyTo() fails
+          // no error is thrown but the earthquake location is not centered on the map
+          // ================================================================================
           if (!document.hidden) map.flyTo([latitudeY, longitudeX], 8)
           else map.setView(L.latLng(latitudeY, longitudeX), 8);
+          // ================================================================================
     
           divText = "";
 
@@ -226,15 +234,16 @@ __END__
 
           var count = json["usgs earthquake count"]
 
-          if (count === 0) $("#msg").css('color', 'rgb(165,255,144)')
+          // color text differently based on the number of recent earthquakes
+          if (count === 0) $("#msg").css('color', 'rgb(165,255,144)') // green-ish
           else if (count < 6) $("#msg").css('color', 'yellow')
-          else $("#msg").css('color', 'rgb(245,107,97)')
+          else $("#msg").css('color', 'rgb(245,107,97)')              // red-ish
 
           var date = new Date();
           json['msg'] = date;
 
+          // set value of info text
           divText = date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)"
-
         }
         $("#msg").text(divText);
 
@@ -283,11 +292,13 @@ __END__
       // kudos
       var attributionOSM = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
 
+      // define map street layer
       var osm = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {  
         attribution: attributionOSM,
         subdomains: ['a', 'b', 'c']
       });
 
+      // init map x, y and zoom and map layer
       var map = L.map('map', {
         center: [latitude, longitude],
         zoom: zoom,
@@ -297,9 +308,11 @@ __END__
       // scalebar
       L.control.scale().addTo(map);
 
+      // =================================================
+      // add help <img> to map
+      // =================================================
       L.Control.Help = L.Control.extend({
           onAdd: function(map) {
-
               var img = L.DomUtil.create('img');
 
               img.src = '/images/help1.png';
@@ -307,7 +320,6 @@ __END__
                 openNav();
                 console.log("open nav...")
               })
-
               return img;
           },
       });
@@ -317,47 +329,56 @@ __END__
       }
 
       L.control.help({ position: 'topright' }).addTo(map);
+      // =================================================
 
     });
 
+    // =========================================================
     function openNav() {
         console.log("in openNav()...")
         document.getElementById("myNav").style.height = "100%";
         document.getElementById("myNav").style.width = "100%";
     }
+    // =========================================================
 
+    // =========================================================
     function closeNav() {
         document.getElementById("myNav").style.height = "0%";
         document.getElementById("myNav").style.width = "0%";
     }
-  } else {
-    alert("Server-Sent Events are not supported with your browser.")
-  };
+    // =========================================================
 
+  } else {
+    // =========================================================
+    // REST Server did not return code 200
+    // =========================================================
+    alert("Server-Sent Events are not supported with your browser.")
+    // =========================================================
+  };
 
 </script>
 
 
-  <div id="myNav" class="overlay" onclick="closeNav();">
-    <a class="closebtn" onclick="closeNav();" style=cursor:pointer>&times;</a>
+<div id="myNav" class="overlay" onclick="closeNav();">
+  <a class="closebtn" onclick="closeNav();" style=cursor:pointer>&times;</a>
 
-    <div class="overlay-content"><h1>Shake-Shake</h1>
-      <img src="/images/earthquake.png" height="96" width="96">
-      <br><br>Display the latest earthquake on a map based on USGS information.
-      <br><br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
-      <br><br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way; think twitter).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
-      <br><br>This website is hosted at<a href="https://www.heroku.com/" target="_blank" style=color:yellow>Heroku</a>using a free dyno.
-      <br><br>This website is for demonstration purposes.  Thanks for visiting.
-      <br><br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
-      <br><br><br><a href="https://www.ruby-lang.org" target="_blank"><img src="/images/Ruby_logo.svg" class="image_type1"></a>
-      &nbsp;&nbsp;<a href="https://www.javascript.com" target="_blank"><img src="/images/js2.png" class="image_type1"></a>
-      &nbsp;&nbsp;<a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank"><img src="/images/usgs.jpg" class="image_type2"></a>
-      &nbsp;&nbsp;<a href="http://leafletjs.com" target="_blank"><img src="/images/leaflet.png" class="image_type3"></a>
-      &nbsp;&nbsp;<a href="https://wiki.openstreetmap.org/wiki/Main_Page" target="_blank"><img src="/images/osm.png" class="image_type1"></a>
-    </div>
-  </div>  
-  
-  <div id='map'></div>
-  <div class="vertical-container"><div id="msg"></div></div>
+  <div class="overlay-content"><h1>Shake-Shake</h1>
+    <img src="/images/earthquake.png" height="96" width="96">
+    <br><br>Display the latest earthquake on a map based on USGS information.
+    <br><br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
+    <br><br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way; think twitter).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
+    <br><br>This website is hosted at<a href="https://www.heroku.com/" target="_blank" style=color:yellow>Heroku</a>using a free dyno.
+    <br><br>This website is for demonstration purposes.  Thanks for visiting.
+    <br><br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
+    <br><br><br><a href="https://www.ruby-lang.org" target="_blank"><img src="/images/Ruby_logo.svg" class="image_type1"></a>
+    &nbsp;&nbsp;<a href="https://www.javascript.com" target="_blank"><img src="/images/js2.png" class="image_type1"></a>
+    &nbsp;&nbsp;<a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank"><img src="/images/usgs.jpg" class="image_type2"></a>
+    &nbsp;&nbsp;<a href="http://leafletjs.com" target="_blank"><img src="/images/leaflet.png" class="image_type3"></a>
+    &nbsp;&nbsp;<a href="https://wiki.openstreetmap.org/wiki/Main_Page" target="_blank"><img src="/images/osm.png" class="image_type1"></a>
+  </div>
+</div>  
+
+<div id='map'></div>
+<div class="vertical-container"><div id="msg"></div></div>
 
 
