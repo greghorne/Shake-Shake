@@ -115,12 +115,11 @@ get '/streamer', provides: 'text/event-stream' do
         end
 
         out << data
-        sleep 30
-
       else
         # most often, server was down (or not responding)
-        puts "REST API Call: error"
+        puts "REST API Call: " + response.code.to_s
       end
+      sleep 30
     end
 
   end
