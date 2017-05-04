@@ -225,7 +225,7 @@ __END__
           divText = "";
 
           setTimeout(function() {
-            $("#map").effect("shake", "times: 40");
+            $("#map").effect("shake", {times: 5, direction: "left"});
             marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
           }, 4000);
 
@@ -365,11 +365,10 @@ __END__
   <div class="overlay-content"><h1>Shake-Shake</h1>
     <img src="/images/earthquake.png" height="96" width="96">
     <br><br>Display the latest earthquake on a map based on USGS information.
-    <br><br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
     <br><br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way; think twitter).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
     <br><br>The server sends data to the client browser approximately every 30 seconds.  
     <br>The data being sent can be observed through the 'developer's console window' of the browser. 
-
+    <br><br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
     <br><br>This website is hosted at<a href="https://www.heroku.com/" target="_blank" style=color:yellow>Heroku</a>using a free dyno.
     <br><br>This website is for demonstration purposes.  Thanks for visiting.
     <br><br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
