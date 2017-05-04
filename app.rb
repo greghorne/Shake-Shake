@@ -350,7 +350,7 @@ __END__
 
   } else {
     // =========================================================
-    // REST Server did not return code 200
+    // EventSource not supported
     // =========================================================
     alert("Server-Sent Events are not supported with your browser.")
     // =========================================================
@@ -371,6 +371,7 @@ __END__
     <br><br>This website is for demonstration purposes.  Thanks for visiting.
     <br><br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
     <br><br><br><a href="https://www.ruby-lang.org" target="_blank"><img src="/images/Ruby_logo.svg" class="image_type1"></a>
+    &nbsp;&nbsp;<a href="http://www.sinatrarb.com" target="_blank"><img src="/images/sinatra.png" class="image_type1"></a>
     &nbsp;&nbsp;<a href="https://www.javascript.com" target="_blank"><img src="/images/js2.png" class="image_type1"></a>
     &nbsp;&nbsp;<a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank"><img src="/images/usgs.jpg" class="image_type2"></a>
     &nbsp;&nbsp;<a href="http://leafletjs.com" target="_blank"><img src="/images/leaflet.png" class="image_type3"></a>
