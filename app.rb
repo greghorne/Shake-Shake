@@ -163,11 +163,14 @@ __END__
     <link rel="stylesheet" href="/stylesheet.css">
     <link rel="stylesheet" href="/leaflet.css" crossorigin=""/>
     <link rel="stylesheet" href="/jquery-ui.css">
+    <link rel="stylesheet" href="/alertify.min.css">
     
     <!-- JS -->
     <script src="/jquery-1.12.4.js"></script>
     <script src="/leaflet.js"  crossorigin=""></script>
     <script src="/jquery-ui.js"></script>
+    <script src="/alertify.min.js"></script>
+    <script src="/bouncemarker.js"></script>
 
   </head> 
   <body><%= yield %></body>
@@ -180,6 +183,8 @@ __END__
 <script>
 
   if (typeof(EventSource) !== "undefined") {
+
+    var firstTime = true;
     var marker;
     var trace = true; 
 
@@ -196,6 +201,8 @@ __END__
 
         json = JSON.parse(event.data);
         if (json['msg'] != "0") {
+
+          firstTime = false;
           
           if (trace) console.log(json);
 
@@ -217,6 +224,8 @@ __END__
           // ================================================================================
           // unknown reason; if the webpage's tab is not active, the map.flyTo() fails
           // no error is thrown but the earthquake location is not centered on the map
+          // thus if tab is not active, just change the map view to the new location 
+          // i.e. don't flyTo() the location
           // ================================================================================
           if (!document.hidden) map.flyTo([latitudeY, longitudeX], 8)
           else map.setView(L.latLng(latitudeY, longitudeX), 8);
@@ -225,11 +234,18 @@ __END__
           divText = "";
 
           setTimeout(function() {
-            $("#map").effect("shake", {times: 5, direction: "left"});
+            $("#map").effect("shake", {times: 5, direction: "up"});
+            marker.bounce({duration: 2000, height: 250})
             marker.bindPopup("<center>" + msg + "<br>Depth: " + depth + " km<br>UTC: " + time + "<center>").openPopup();
           }, 4000);
 
         } else {
+
+          if (firstTime) {
+            alertify.warning("<center>No recent data available from USGS.<br/>Please wait for an event...</center>")
+
+            firstTime = false;
+          }
           if (trace) console.log(json);
 
           var count = json["usgs earthquake count"]
@@ -245,6 +261,7 @@ __END__
           // set value of info text
           divText = date + " === USGS Earthquake Count: " + json["usgs earthquake count"] + " (last " + json["in recent minutes"] + " minutes)"
         }
+        // commented out message that appaears on bottom of webpage
         // $("#msg").text(divText);
 
       }, false);
