@@ -335,7 +335,6 @@ __END__
               img.src = '/images/help1.png';
               img.addEventListener('click', function () {
                 openNav();
-                console.log("open nav...")
               })
               return img;
           },
@@ -352,7 +351,6 @@ __END__
 
     // =========================================================
     function openNav() {
-        console.log("in openNav()...")
         document.getElementById("myNav").style.height = "100%";
         document.getElementById("myNav").style.width = "100%";
     }
