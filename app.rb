@@ -307,11 +307,13 @@ __END__
       var zoom = 4
 
       // kudos
-      var attributionOSM = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+      var attributionOSM  = '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a> ';
+      var attributionTOPO = '| &copy; <a href="http://opentopomap.org">OpenTopoMap</a> ' ;
+      var attributionUSGS = ' | <a href="https://earthquake.usgs.gov/fdsnws/event/1/">USGS API</a>'; 
 
       // define map street layer
       var osm = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {  
-        attribution: attributionOSM,
+        attribution: attributionOSM + attributionTOPO + attributionUSGS,
         subdomains: ['a', 'b', 'c']
       });
 
