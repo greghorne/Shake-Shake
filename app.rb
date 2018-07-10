@@ -382,7 +382,7 @@ __END__
   <div class="overlay-content"><h1>Shake-Shake</h1>
     <img src="/images/earthquake.png" height="96" width="96">
     <br><br>Display the latest earthquake on a map based on USGS information.
-    <br><br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way; think twitter).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
+    <br><br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way-feed; facebook, twitter, stock quotes).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
     <br><br>The server sends data to the client browser approximately every 30 seconds.  
     <br>The data being sent can be observed through the 'developer's console window' of the browser. 
     <br><br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
