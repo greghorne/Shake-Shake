@@ -1,4 +1,4 @@
-# push_sinatra
+# Shake-Shake
 **Server-Sent Events (SSE in HTML5)**
 
 
