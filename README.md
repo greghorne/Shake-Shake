@@ -26,7 +26,7 @@
 - Leaflet 1.0.3 (https://en.wikipedia.org/wiki/Leaflet_(software))
 - OpenStreetMaps (https://en.wikipedia.org/wiki/OpenStreetMap)
 - USGS REST API Server (https://earthquake.usgs.gov/fdsnws/event/1/)
-- Deployment: Heroku free dyno (https://www.heroku.com)
+- Deployment: Docker container on Raspberry Pi 3 B http://zotac1.ddns.net:3200
 
 *Local Deployment/Execution (Ubuntu):*
 
