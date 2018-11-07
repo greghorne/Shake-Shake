@@ -38,5 +38,5 @@
 
 This webpage can be more fun than watching paint dry.
 
-Deployment: https://shake-shake.herokuapp.com/
+Deployment: http://zotac1.ddns.net:3200
 
