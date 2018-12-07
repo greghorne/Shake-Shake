@@ -386,7 +386,7 @@ __END__
     <br><br>The server sends data to the client browser approximately every 30 seconds.  
     <br>The data being sent can be observed through the 'developer's console window' of the browser. 
     <br><br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
-    <br><br>This website is hosted at<a href="https://www.heroku.com/" target="_blank" style=color:yellow>Heroku</a>using a free dyno.
+    <br><br>This website is hosted on a Raspberry Pi.
     <br><br>This website is for demonstration purposes.  Thanks for visiting.
     <br><br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
     <br><br><br><a href="https://www.ruby-lang.org" target="_blank"><img src="/images/Ruby_logo.svg" class="image_type1"></a>
