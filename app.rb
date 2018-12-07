@@ -382,12 +382,11 @@ __END__
   <div class="overlay-content"><h1>Shake-Shake</h1>
     <img src="/images/earthquake.png" height="96" width="96">
     <br><br>Display the latest earthquake on a map based on USGS information.
-    <br><br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way-feed; facebook, twitter, stock quotes).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
+    <br><br>Server-Sent Events are used in this webapp to send earthquake information from the server to the client (one-way-feed).  Please note that Server-Sent Events are not supported by IE/Edge at this writing. 
     <br><br>The server sends data to the client browser approximately every 30 seconds.  
-    <br>The data being sent can be observed through the 'developer's console window' of the browser. 
+    <br>The data being sent can be observed through the console window of the browser. 
     <br><br>Note that earthquake information is not necessarily instantaneous meanings an earthquake that occurred 10 minutes ago may only be available through the USGS in the last few minutes.
     <br><br>This website is hosted on a Raspberry Pi.
-    <br><br>This website is for demonstration purposes.  Thanks for visiting.
     <br><br><a style=color:yellow href="https://github.com/greghorne/push_sinatra" target="_blank">GitHub Repository</a>
     <br><br><br><a href="https://www.ruby-lang.org" target="_blank"><img src="/images/Ruby_logo.svg" class="image_type1"></a>
     &nbsp;&nbsp;<a href="http://www.sinatrarb.com" target="_blank"><img src="/images/sinatra.png" class="image_type1"></a>
