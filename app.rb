@@ -214,7 +214,7 @@ __END__
           time       = json['utc'];
 
           // if any, remove current map marker
-          if (marker !== undefined) map.removeLayer(marker);
+          // if (marker !== undefined) map.removeLayer(marker);
 
           // add new marker to map
           marker = L.marker([latitudeY, longitudeX]).addTo(map);
