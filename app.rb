@@ -307,10 +307,10 @@ __END__
       var zoom = 4
 
       // kudos
-      var attributionTOPO = 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      var attributionTOPO = 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 
       // define map street layer
-      var osm = L.tileLayer('https://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {  
+      var osm = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {  
         attribution: attributionTOPO
       });
 
